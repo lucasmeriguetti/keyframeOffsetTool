@@ -6,15 +6,27 @@ import maya.cmds as cmds
 import  keyframeOffsetTool.utils as utils
 reload(utils)
 
+_my_ui = None 
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(315, 150)
-        Form.setMinimumSize(QtCore.QSize(50, 50))
-        Form.setMaximumSize(QtCore.QSize(315, 150))
-        Form.setWindowFlags(Qt.WindowStaysOnTopHint)
-        self.sld_keyframe = QtWidgets.QSlider(Form)
+class OffsetKey(QtWidgets.QWidget):
+    _my_ui = None
+
+    @staticmethod
+    def run():
+        OffsetKey._my_ui = Ui_Form._my_ui or OffsetKey()
+        OffsetKey._my_ui.show()
+
+    def __init__(self, parent=None):
+        super(OffsetKey, self).__init__(parent = parent)
+        self.setupUi()
+
+    def setupUi(self):
+        self.setObjectName("Form")
+        self.resize(315, 150)
+        self.setMinimumSize(QtCore.QSize(50, 50))
+        self.setMaximumSize(QtCore.QSize(315, 150))
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        self.sld_keyframe = QtWidgets.QSlider(self)
         self.sld_keyframe.setGeometry(QtCore.QRect(20, 100, 271, 30))
         self.sld_keyframe.setMinimum(-20)
         self.sld_keyframe.setMaximum(20)
@@ -22,43 +34,40 @@ class Ui_Form(object):
         self.sld_keyframe.setTickPosition(QtWidgets.QSlider.TicksAbove)
         self.sld_keyframe.setTickInterval(1)
         self.sld_keyframe.setObjectName("sld_keyframe")
-        self.btn_in = QtWidgets.QPushButton(Form)
+        self.btn_in = QtWidgets.QPushButton(self)
         self.btn_in.setGeometry(QtCore.QRect(20, 40, 40, 23))
         self.btn_in.setObjectName("btn_in")
-        self.btn_out = QtWidgets.QPushButton(Form)
+        self.btn_out = QtWidgets.QPushButton(self)
         self.btn_out.setGeometry(QtCore.QRect(250, 40, 40, 23))
         self.btn_out.setObjectName("btn_out")
-        self.spin_in = QtWidgets.QDoubleSpinBox(Form)
+        self.spin_in = QtWidgets.QDoubleSpinBox(self)
         self.spin_in.setGeometry(QtCore.QRect(70, 40, 62, 22))
         self.spin_in.setDecimals(1)
         self.spin_in.setMinimum(-10000.0)
         self.spin_in.setMaximum(10000.0)
         self.spin_in.setSingleStep(5.0)
         self.spin_in.setObjectName("spin_in")
-        self.spin_out = QtWidgets.QDoubleSpinBox(Form)
+        self.spin_out = QtWidgets.QDoubleSpinBox(self)
         self.spin_out.setGeometry(QtCore.QRect(180, 40, 62, 22))
         self.spin_out.setMinimum(-10000.0)
         self.spin_out.setMaximum(10000.0)
         self.spin_out.setSingleStep(5.0)
         self.spin_out.setObjectName("spin_out")
-        self.lb_timeline = QtWidgets.QLabel(Form)
+        self.lb_timeline = QtWidgets.QLabel(self)
         self.lb_timeline.setGeometry(QtCore.QRect(20, 20, 47, 13))
         self.lb_timeline.setObjectName("lb_timeline")
-        self.lb_offset = QtWidgets.QLabel(Form)
+        self.lb_offset = QtWidgets.QLabel(self)
         self.lb_offset.setGeometry(QtCore.QRect(20, 80, 47, 13))
-        self.lb_offset.setObjectName("lb_offset")
-
-        
-        
-        self.retranslateUi(Form)
+        self.lb_offset.setObjectName("lb_offset") 
+        self.retranslateUi()
 
         self.interact()
         self.is_get_time_slider_range = False
         self.timeline_range = self.get_timeline();
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Keyframe Offset"))
+        self.setWindowTitle(_translate("Form", "Keyframe Offset"))
         self.btn_in.setText(_translate("Form", "In"))
         self.btn_out.setText(_translate("Form", "Out"))
         self.lb_timeline.setText(_translate("Form", "Timeline"))
@@ -122,18 +131,6 @@ class Ui_Form(object):
         self.btn_out.clicked.connect(self.btn_out_clicked)
 
 
-def run():
-
-    app = QtWidgets.QApplication.instance()
-    Form = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(Form)
-    Form.show()
-    app.exec_()
-
-
 if __name__ == "__main__":
-    run()
-
-
+    OffsetKey.run()
 
