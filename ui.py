@@ -6,8 +6,6 @@ import maya.cmds as cmds
 import  keyframeOffsetTool.utils as utils
 reload(utils)
 
-_my_ui = None 
-
 class OffsetKey(QtWidgets.QWidget):
     _my_ui = None
 
