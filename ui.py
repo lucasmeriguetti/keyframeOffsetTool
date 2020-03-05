@@ -3,16 +3,17 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import Slot, Qt
 import maya.cmds as cmds
 
-import  keyframeOffsetTool.utils as utils
-reload(utils)
+import  keyframeOffsetTool.utils 
+reload(keyframeOffsetTool.utils)
 
-class OffsetKey(QtWidgets.QWidget):
-    _my_ui = None
+_OffsetKeyUIReference = None
 
+class OffsetKey(QtWidgets.QMainWindow):
     @staticmethod
     def run():
-        OffsetKey._my_ui = Ui_Form._my_ui or OffsetKey()
-        OffsetKey._my_ui.show()
+        global _OffsetKeyUIReference;
+        _OffsetKeyUIReference = _OffsetKeyUIReference or OffsetKey()
+        _OffsetKeyUIReference.show()
 
     def __init__(self, parent=None):
         super(OffsetKey, self).__init__(parent = parent)
@@ -57,8 +58,8 @@ class OffsetKey(QtWidgets.QWidget):
         self.lb_offset = QtWidgets.QLabel(self)
         self.lb_offset.setGeometry(QtCore.QRect(20, 80, 47, 13))
         self.lb_offset.setObjectName("lb_offset") 
+       
         self.retranslateUi()
-
         self.interact()
         self.is_get_time_slider_range = False
         self.timeline_range = self.get_timeline();
