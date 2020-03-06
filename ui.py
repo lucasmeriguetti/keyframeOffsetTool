@@ -3,20 +3,21 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import Slot, Qt
 import maya.cmds as cmds
 
-import  keyframeOffsetTool.utils 
-reload(keyframeOffsetTool.utils)
+import  keyframeOffsetTool.utils as utils
+reload(utils)
 
-_OffsetKeyUIReference = None
+_keyframeOffsetRef = None
 
-class OffsetKey(QtWidgets.QMainWindow):
+class KeyframeOffsetUI(QtWidgets.QMainWindow):
+    
     @staticmethod
     def run():
-        global _OffsetKeyUIReference;
-        _OffsetKeyUIReference = _OffsetKeyUIReference or OffsetKey()
-        _OffsetKeyUIReference.show()
+        global _keyframeOffsetRef;
+        _keyframeOffsetRef = _keyframeOffsetRef or KeyframeOffsetUI()
+        _keyframeOffsetRef.show()
 
     def __init__(self, parent=None):
-        super(OffsetKey, self).__init__(parent = parent)
+        super(KeyframeOffsetUI, self).__init__(parent = parent)
         self.setupUi()
 
     def setupUi(self):
@@ -131,5 +132,5 @@ class OffsetKey(QtWidgets.QMainWindow):
 
 
 if __name__ == "__main__":
-    OffsetKey.run()
+    KeyframeOffsetUI.run()
 
