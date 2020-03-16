@@ -59,11 +59,13 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
         self.lb_offset = QtWidgets.QLabel(self)
         self.lb_offset.setGeometry(QtCore.QRect(20, 80, 47, 13))
         self.lb_offset.setObjectName("lb_offset") 
-       
-        self.retranslateUi()
-        self.interact()
+        
+        self.globalvalue = 0
         self.is_get_time_slider_range = False
         self.timeline_range = self.get_timeline();
+        self.retranslateUi()
+        self.interact()
+        
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -90,13 +92,15 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
 
     def reset_value(self):
         self.is_get_time_slider_range = False
-        self.globalvalue = self.sld_keyframe.value()
+
+        if len(utils.get_selection())> 0:
+            self.globalvalue += self.sld_keyframe.value()
+            
         self.sld_keyframe.setValue(0)
 
     def slider_pressed(self):
         self.oldvalue = self.sld_keyframe.value()
 
-    
     def get_timeline_slider(self):
         return utils.get_timeline_slider_range()
 
@@ -120,7 +124,7 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
 
     def interact(self):
         self.oldvalue = 0
-        self.globalvalue = 0
+        
 
         self.sld_keyframe.sliderPressed.connect(self.slider_pressed)
         self.sld_keyframe.sliderMoved.connect(self.keyframe_offset)
