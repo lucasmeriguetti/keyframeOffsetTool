@@ -1,5 +1,5 @@
 import maya.cmds as cmds
-import maya.mel
+import maya.mel as mel
 
 def get_timeline_range():
     start_timeline = cmds.playbackOptions(query = True, min = True)
@@ -13,7 +13,7 @@ def get_channelbox_attributes():
     return attrs
 
 def get_timeline_slider_range():
-    aPlayBackSliderPython = maya.mel.eval('$tmpVar=$gPlayBackSlider')
+    aPlayBackSliderPython = mel.eval('$tmpVar=$gPlayBackSlider')
 
     if cmds.timeControl(aPlayBackSliderPython, query = True, rangeVisible = True):
         time_slider_range = cmds.timeControl(aPlayBackSliderPython, query = True, rangeArray = True)
