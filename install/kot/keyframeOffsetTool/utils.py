@@ -35,7 +35,6 @@ def keyframe_offset(value, timeline_range):
     
     for obj in selection:
         obj_index = selection.index(obj) + 1
-        print get_channelbox_attributes()
         try:
             cmds.keyframe(obj, relative = True, at = get_channelbox_attributes(),
              time = ((slider_range[0]), (slider_range[1])), timeChange = obj_index * value)
