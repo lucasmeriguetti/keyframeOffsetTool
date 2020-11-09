@@ -7,7 +7,7 @@ import  keyframeOffsetTool.utils as utils
 reload(utils)
 
 _keyframeOffsetRef = None
-
+_keyframeOffsetFactor = 4.0
 class KeyframeOffsetUI(QtWidgets.QMainWindow):
     
     @staticmethod
@@ -22,10 +22,11 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
 
     def setupUi(self):
         self.setObjectName("Form")
-        self.resize(315, 150)
+        self.resize(315, 200)
         self.setMinimumSize(QtCore.QSize(50, 50))
-        self.setMaximumSize(QtCore.QSize(315, 150))
+        self.setMaximumSize(QtCore.QSize(315, 200))
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
+
         self.sld_keyframe = QtWidgets.QSlider(self)
         self.sld_keyframe.setGeometry(QtCore.QRect(20, 100, 271, 30))
         self.sld_keyframe.setMinimum(-20)
@@ -34,12 +35,15 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
         self.sld_keyframe.setTickPosition(QtWidgets.QSlider.TicksAbove)
         self.sld_keyframe.setTickInterval(1)
         self.sld_keyframe.setObjectName("sld_keyframe")
+
         self.btn_in = QtWidgets.QPushButton(self)
         self.btn_in.setGeometry(QtCore.QRect(20, 40, 40, 23))
         self.btn_in.setObjectName("btn_in")
+
         self.btn_out = QtWidgets.QPushButton(self)
         self.btn_out.setGeometry(QtCore.QRect(250, 40, 40, 23))
         self.btn_out.setObjectName("btn_out")
+
         self.spin_in = QtWidgets.QDoubleSpinBox(self)
         self.spin_in.setGeometry(QtCore.QRect(70, 40, 62, 22))
         self.spin_in.setDecimals(1)
@@ -47,15 +51,31 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
         self.spin_in.setMaximum(10000.0)
         self.spin_in.setSingleStep(5.0)
         self.spin_in.setObjectName("spin_in")
+
         self.spin_out = QtWidgets.QDoubleSpinBox(self)
         self.spin_out.setGeometry(QtCore.QRect(180, 40, 62, 22))
         self.spin_out.setMinimum(-10000.0)
         self.spin_out.setMaximum(10000.0)
         self.spin_out.setSingleStep(5.0)
         self.spin_out.setObjectName("spin_out")
+
         self.lb_timeline = QtWidgets.QLabel(self)
         self.lb_timeline.setGeometry(QtCore.QRect(20, 20, 47, 13))
         self.lb_timeline.setObjectName("lb_timeline")
+
+        self.lb_steps = QtWidgets.QLabel(self)
+        self.lb_steps.setGeometry(QtCore.QRect(20, 155, 47, 13))
+        self.lb_steps.setObjectName("lb_steps")
+
+        self.spin_steps = QtWidgets.QDoubleSpinBox(self)
+        self.spin_steps.setGeometry(QtCore.QRect(50, 150, 50, 22))
+        self.spin_steps.setDecimals(1)
+        self.spin_steps.setMinimum(-10000.0)
+        self.spin_steps.setMaximum(10000.0)
+        self.spin_steps.setSingleStep(0.1)
+        self.spin_steps.setObjectName("spin_steps")
+        self.spin_steps.setValue(.5)
+
         self.lb_offset = QtWidgets.QLabel(self)
         self.lb_offset.setGeometry(QtCore.QRect(20, 80, 47, 13))
         self.lb_offset.setObjectName("lb_offset") 
@@ -73,6 +93,7 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
         self.btn_in.setText(_translate("Form", "In"))
         self.btn_out.setText(_translate("Form", "Out"))
         self.lb_timeline.setText(_translate("Form", "Timeline"))
+        self.lb_steps.setText(_translate("Form", "Steps"))
         self.lb_offset.setText(_translate("Form", "Offset"))
 
     def keyframe_offset(self):
@@ -84,7 +105,7 @@ class KeyframeOffsetUI(QtWidgets.QMainWindow):
         if not self.is_get_time_slider_range:
             self.timeline_range = [self.spin_in.value(), self.spin_out.value()]
 
-        self.new_value = (float(self.sld_keyframe.value() - self.oldvalue )/10.0)
+        self.new_value = (float(self.sld_keyframe.value() - self.oldvalue )*self.spin_steps.value())
 
         utils.keyframe_offset(self.new_value,  self.timeline_range)
         
